@@ -1,7 +1,9 @@
+import { analisaRecintosSolucao } from "./recintos-zoo-solucao.js";
+
 class RecintosZoo {
 
     analisaRecintos(animal, quantidade) {
-        return {erro: frase , recintosViaveis: 0}
+        return analisaRecintosSolucao(animal, quantidade)
     }
 
 }
