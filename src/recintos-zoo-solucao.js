@@ -63,7 +63,38 @@ const recintos = [
   ])
 ]
 
+// Essa função valida se o novo animal consta na lista dos animais habilitados.
+function validarAnimal(animal){
+  return animais.some(animalHabilitado => animalHabilitado.tipo == animal)
+}
+
+// Essa função valida se a quantidade é maior que 0 e se é um número inteiro.
+function validarQuantidade(quantidade) {
+  return Number.isInteger(quantidade) && quantidade > 0 
+}
 
 function analisaRecintosSolucao(animal, quantidade) {
- 
+  let resultado = new Resultado();
+  animal = animal.toLowerCase();
+
+  if(!validarAnimal(animal)){
+    resultado.erro = "Animal inválido"
+    return resultado
+  }
+
+  if(!validarQuantidade(quantidade)){
+    resultado.erro = "Quantidade inválida"
+    return resultado
+  }
+
 }
+
+export { analisaRecintosSolucao as analisaRecintosSolucao};
+
+function testarSolucoes(animal, quantidade){
+  let resultado = analisaRecintosSolucao(animal, quantidade)
+  console.log(`Erro: ${resultado.erro} \nRecintos Viáveis: ${resultado.recintosViaveis}`)
+}
+
+testarSolucoes("UNICORNIO", 1)
+testarSolucoes("MACACO", -5)
