@@ -1,0 +1,3 @@
+function analisaRecintosSolucao(animal, quantidade) {
+ 
+}
