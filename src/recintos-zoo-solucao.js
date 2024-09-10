@@ -73,6 +73,11 @@ function validarQuantidade(quantidade) {
   return Number.isInteger(quantidade) && quantidade > 0 
 }
 
+// Essa função retorna os recintos que possuem um bioma adequadro para o novo animal
+function filtrarRecintosBiomaAdequado(recintos, animalHabilitado){
+  return recintos.filter(recinto => animalHabilitado.biomas.some(bioma => recinto.biomas.includes(bioma)))
+}
+
 function analisaRecintosSolucao(animal, quantidade) {
   let resultado = new Resultado();
   animal = animal.toLowerCase();
@@ -87,14 +92,26 @@ function analisaRecintosSolucao(animal, quantidade) {
     return resultado
   }
 
+  let animalHabilitado = animais.find(animalHabilitado => animalHabilitado.tipo == animal)
+  let tamanhoTotalAnimalHabilitado = quantidade * animalHabilitado.tamanho
+  console.log(animalHabilitado) // Auxilio. Excluir
+  console.log(tamanhoTotalAnimalHabilitado) // Auxilio. Excluir
+
+  let recintosViaveis = filtrarRecintosBiomaAdequado(recintos, animalHabilitado)
+  console.log(recintosViaveis) // Auxilio. Excluir
 }
 
 export { analisaRecintosSolucao as analisaRecintosSolucao};
 
 function testarSolucoes(animal, quantidade){
   let resultado = analisaRecintosSolucao(animal, quantidade)
-  console.log(`Erro: ${resultado.erro} \nRecintos Viáveis: ${resultado.recintosViaveis}`)
+  if(resultado){
+    console.log(`Erro: ${resultado.erro} \nRecintos Viáveis: ${resultado.recintosViaveis}`)
+  }
+  console.log("Testando")
 }
 
 testarSolucoes("UNICORNIO", 1)
 testarSolucoes("MACACO", -5)
+testarSolucoes("MACACO", 4)
+testarSolucoes("LEAO", 1)
