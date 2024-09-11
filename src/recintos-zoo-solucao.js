@@ -96,6 +96,14 @@ function filtrarRecintosSemCarnivorosVazio(recintosViaveis){
     return recinto.animais.length == 0 || recinto.animais.every(animalExistente => !animalExistente.ehCarnivoro)
   })
 }
+
+// A função retorna os recintos que possuem os biomas savana e rio.
+function filtrarRecintoBiomasSavanaRio(recintosViaveis, animalHabilitado){
+  return recintosViaveis.filter(recinto => {
+    return animalHabilitado.biomas.every(bioma => recinto.biomas.includes(bioma))
+  })
+}
+
 // A função retorna recintos que não estejam vazios
 function filtrarRecintosComAnimais(recintosViaveis){
   return recintosViaveis.filter(recinto => recinto.animais.length != 0)
@@ -124,7 +132,7 @@ function analisaRecintosSolucao(animal, quantidade) {
 
   let animalHabilitado = animais.find(animalHabilitado => animalHabilitado.tipo == animal)
   let tamanhoTotalAnimalHabilitado = quantidade * animalHabilitado.tamanho
-  console.log(animalHabilitado) // Auxilio. Excluir
+  console.log(animalHabilitado.tipo) // Auxilio. Excluir
   console.log(tamanhoTotalAnimalHabilitado) // Auxilio. Excluir
 
   let recintosViaveis = filtrarRecintosBiomaAdequado(animalHabilitado)
@@ -143,6 +151,14 @@ function analisaRecintosSolucao(animal, quantidade) {
 
     recintosViaveis = filtrarRecintosSemCarnivorosVazio(recintosViaveis)
     console.log(recintosViaveis) // Auxilio. Excluir
+
+    if(animalHabilitado.tipo == "hipopotamo"){
+      let recintosBiomaSavanaRio = filtrarRecintoBiomasSavanaRio(recintosViaveis, animalHabilitado)
+      console.log(recintosBiomaSavanaRio) // Auxilio. Excluir
+      recintosViaveis = filtrarRecintosMesmaEspecieVazio(recintosViaveis, animalHabilitado)
+      recintosViaveis = recintosViaveis.concat(recintosBiomaSavanaRio)
+      console.log(recintosViaveis) // Auxilio. Excluir
+    }
 
     if(animalHabilitado.tipo == "macaco" && quantidade == 1){
       recintosViaveis = filtrarRecintosComAnimais(recintosViaveis)
@@ -176,8 +192,9 @@ function testarSolucoes(animal, quantidade){
   console.log("Testando")
 }
 
-testarSolucoes("UNICORNIO", 1)
-testarSolucoes("MACACO", -5)
-testarSolucoes("MACACO", 4)
-testarSolucoes("CROCODILO", 1)
-testarSolucoes("MACACO", 1)
+// testarSolucoes("UNICORNIO", 1)
+// testarSolucoes("MACACO", -5)
+// testarSolucoes("MACACO", 4)
+// testarSolucoes("CROCODILO", 1)
+// testarSolucoes("MACACO", 1)
+testarSolucoes("hIPOPOTAMO", 1)
