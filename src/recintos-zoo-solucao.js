@@ -118,10 +118,13 @@ function filtrarRecintosComAnimais(recintosViaveis){
 }
 
 // A função formata uma lista de recintos viáveis.
-function formatarListaRecintosViaveis(recintosViaveis, tamanhoTotalAnimalHabilitado){
+function formatarListaRecintosViaveis(recintosViaveis, animalHabilitado, tamanhoTotalAnimalHabilitado){
   recintosViaveis.sort((a, b) => a.numero - b.numero)
+
   return recintosViaveis.map(recinto => {
-    return `Recinto ${recinto.numero} (espaço livre: ${recinto.espacoLivre() - tamanhoTotalAnimalHabilitado} total: ${recinto.tamanhoTotal})`
+    let espacoExtra = definirEspacoExtra(recinto, animalHabilitado)
+
+    return `Recinto ${recinto.numero} (espaço livre: ${recinto.espacoLivre() - (tamanhoTotalAnimalHabilitado + espacoExtra)} total: ${recinto.tamanhoTotal})`
   })
 }
 
@@ -182,7 +185,7 @@ function analisaRecintosSolucao(animal, quantidade) {
     resultado.erro = "Não há recinto viável"
 
   } else {
-    resultado.recintosViaveis = formatarListaRecintosViaveis(recintosViaveis, tamanhoTotalAnimalHabilitado)
+    resultado.recintosViaveis = formatarListaRecintosViaveis(recintosViaveis, animalHabilitado, tamanhoTotalAnimalHabilitado)
     resultado.recintosViaveis.forEach(recinto => {
       console.log(recinto)
     }) // Auxilio. Excluir
@@ -206,7 +209,7 @@ function testarSolucoes(animal, quantidade){
 
 // testarSolucoes("UNICORNIO", 1)
 // testarSolucoes("MACACO", -5)
-// testarSolucoes("MACACO", 4)
+testarSolucoes("MACACO", 2)
 // testarSolucoes("CROCODILO", 1)
 // testarSolucoes("MACACO", 1)
 // testarSolucoes("LEAO", 2)
