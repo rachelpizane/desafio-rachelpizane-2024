@@ -90,6 +90,13 @@ function filtrarRecintosEspacoLivre(recintosViaveis, tamanhoTotalAnimalHabilitad
   return recintosViaveis.filter(recinto => recinto.espacoLivre() >= tamanhoTotalAnimalHabilitado)
 }
 
+// A função retorna os recintos que estão vazios ou que não possuem animais carnívoros.
+function filtrarRecintosSemCarnivorosVazio(recintosViaveis){
+  return recintosViaveis.filter(recinto => {
+    return recinto.animais.length == 0 || recinto.animais.every(animalExistente => !animalExistente.ehCarnivoro)
+  })
+}
+
 // A função formata uma lista de recintos viáveis.
 function formatarListaRecintosViaveis(recintosViaveis, tamanhoTotalAnimalHabilitado){
   return recintosViaveis.map(recinto => {
@@ -127,7 +134,12 @@ function analisaRecintosSolucao(animal, quantidade) {
 
     recintosViaveis = filtrarRecintosEspacoLivre(recintosViaveis, tamanhoTotalAnimalHabilitado)
     console.log(recintosViaveis) // Auxilio. Excluir
-  } // Incluir Else / Herbívoro
+  } else {
+    console.log("É Herbívoro!") // Auxilio. Excluir
+
+    recintosViaveis = filtrarRecintosSemCarnivorosVazio(recintosViaveis)
+    console.log(recintosViaveis) // Auxilio. Excluir
+  }
 
   if(recintosViaveis.length == 0){
     resultado.erro = "Não há recinto viável"
