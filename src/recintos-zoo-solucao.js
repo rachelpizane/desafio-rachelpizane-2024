@@ -73,6 +73,11 @@ function validarQuantidade(quantidade) {
   return Number.isInteger(quantidade) && quantidade > 0 
 }
 
+function definirEspacoExtra(recinto, animalHabilitado) {
+  let validaAnimalEspecieDiferente = recinto.animais.some(animalExistente => animalExistente.tipo != animalHabilitado.tipo);
+  return validaAnimalEspecieDiferente ? 1 : 0;
+}
+
 // A função retorna os recintos que possuem um bioma adequadro para o novo animal
 function filtrarRecintosBiomaAdequado(animalHabilitado){
   return recintos.filter(recinto => animalHabilitado.biomas.some(bioma => recinto.biomas.includes(bioma)))
@@ -86,8 +91,11 @@ function filtrarRecintosMesmaEspecieVazio(recintosViaveis, animalHabilitado){
 }
 
 // A função retorna os recintos que possuem um tamanho de espaço livre maior ou igual ao tamanho total do novo animal.
-function filtrarRecintosEspacoLivre(recintosViaveis, tamanhoTotalAnimalHabilitado) {
-  return recintosViaveis.filter(recinto => recinto.espacoLivre() >= tamanhoTotalAnimalHabilitado)
+function filtrarRecintosEspacoLivre(recintosViaveis, animalHabilitado, tamanhoTotalAnimalHabilitado) {
+  return recintosViaveis.filter(recinto => { 
+    let espacoExtra = definirEspacoExtra(recinto, animalHabilitado)
+    console.log(espacoExtra)
+    return recinto.espacoLivre() >= (tamanhoTotalAnimalHabilitado + espacoExtra)})
 }
 
 // A função retorna os recintos que estão vazios ou que não possuem animais carnívoros.
@@ -145,7 +153,7 @@ function analisaRecintosSolucao(animal, quantidade) {
     recintosViaveis = filtrarRecintosMesmaEspecieVazio(recintosViaveis, animalHabilitado)
     console.log(recintosViaveis) // Auxilio. Excluir
 
-    recintosViaveis = filtrarRecintosEspacoLivre(recintosViaveis, tamanhoTotalAnimalHabilitado)
+    recintosViaveis = filtrarRecintosEspacoLivre(recintosViaveis, animalHabilitado, tamanhoTotalAnimalHabilitado)
     console.log(recintosViaveis) // Auxilio. Excluir
   } else {
     console.log("É Herbívoro!") // Auxilio. Excluir
@@ -165,6 +173,9 @@ function analisaRecintosSolucao(animal, quantidade) {
       recintosViaveis = filtrarRecintosComAnimais(recintosViaveis)
       console.log(recintosViaveis) // Auxilio. Excluir
     }
+
+    recintosViaveis = filtrarRecintosEspacoLivre(recintosViaveis, animalHabilitado, tamanhoTotalAnimalHabilitado)
+    console.log(recintosViaveis) // Auxilio. Excluir
   }
 
   if(recintosViaveis.length == 0){
@@ -198,4 +209,5 @@ function testarSolucoes(animal, quantidade){
 // testarSolucoes("MACACO", 4)
 // testarSolucoes("CROCODILO", 1)
 // testarSolucoes("MACACO", 1)
-testarSolucoes("hIPOPOTAMO", 1)
+// testarSolucoes("LEAO", 2)
+// testarSolucoes("hIPOPOTAMO", 1)
