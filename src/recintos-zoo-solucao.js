@@ -90,6 +90,13 @@ function filtrarRecintosEspacoLivre(recintosViaveis, tamanhoTotalAnimalHabilitad
   return recintosViaveis.filter(recinto => recinto.espacoLivre() >= tamanhoTotalAnimalHabilitado)
 }
 
+// A função formata uma lista de recintos viáveis.
+function formatarListaRecintosViaveis(recintosViaveis, tamanhoTotalAnimalHabilitado){
+  return recintosViaveis.map(recinto => {
+    return `Recinto ${recinto.numero} (espaço livre: ${recinto.espacoLivre() - tamanhoTotalAnimalHabilitado} total: ${recinto.tamanhoTotal})`
+  })
+}
+
 function analisaRecintosSolucao(animal, quantidade) {
   let resultado = new Resultado();
   animal = animal.toLowerCase();
@@ -121,6 +128,19 @@ function analisaRecintosSolucao(animal, quantidade) {
     recintosViaveis = filtrarRecintosEspacoLivre(recintosViaveis, tamanhoTotalAnimalHabilitado)
     console.log(recintosViaveis) // Auxilio. Excluir
   } // Incluir Else / Herbívoro
+
+  if(recintosViaveis.length == 0){
+    resultado.erro = "Não há recinto viável"
+
+  } else {
+    resultado.recintosViaveis = formatarListaRecintosViaveis(recintosViaveis, tamanhoTotalAnimalHabilitado)
+    resultado.recintosViaveis.forEach(recinto => {
+      console.log(recinto)
+    }) // Auxilio. Excluir
+    console.log("Comprimento: " + resultado.recintosViaveis.length) // Auxilio. Excluir
+  }
+
+  return resultado
 }
 
 
@@ -138,4 +158,5 @@ function testarSolucoes(animal, quantidade){
 testarSolucoes("UNICORNIO", 1)
 testarSolucoes("MACACO", -5)
 testarSolucoes("MACACO", 4)
-testarSolucoes("LEAO", 1)
+testarSolucoes("CROCODILO", 1)
+testarSolucoes("LEAO", 4)
