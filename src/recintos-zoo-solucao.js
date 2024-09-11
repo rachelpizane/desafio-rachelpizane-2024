@@ -111,6 +111,7 @@ function filtrarRecintosComAnimais(recintosViaveis){
 
 // A função formata uma lista de recintos viáveis.
 function formatarListaRecintosViaveis(recintosViaveis, tamanhoTotalAnimalHabilitado){
+  recintosViaveis.sort((a, b) => a.numero - b.numero)
   return recintosViaveis.map(recinto => {
     return `Recinto ${recinto.numero} (espaço livre: ${recinto.espacoLivre() - tamanhoTotalAnimalHabilitado} total: ${recinto.tamanhoTotal})`
   })
