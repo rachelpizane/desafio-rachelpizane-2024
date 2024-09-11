@@ -24,7 +24,7 @@ class Recinto {
     this.tamanhoTotal = tamanhoTotal;
     this.animais = animais
   }
-  espacoAtual() {
+  espacoLivre() {
     return this.tamanhoTotal - this.animais.reduce((acc, animal) => {
       return acc + animal.tamanhoTotal()
     }, 0)
@@ -85,6 +85,11 @@ function filtrarRecintosMesmaEspecieVazio(recintosViaveis, animalHabilitado){
   })
 }
 
+// A função retorna os recintos que possuem um tamanho de espaço livre maior ou igual ao tamanho total do novo animal.
+function filtrarRecintosEspacoLivre(recintosViaveis, tamanhoTotalAnimalHabilitado) {
+  return recintosViaveis.filter(recinto => recinto.espacoLivre() >= tamanhoTotalAnimalHabilitado)
+}
+
 function analisaRecintosSolucao(animal, quantidade) {
   let resultado = new Resultado();
   animal = animal.toLowerCase();
@@ -111,6 +116,9 @@ function analisaRecintosSolucao(animal, quantidade) {
     console.log("É Carnívoro!") // Auxilio. Excluir
 
     recintosViaveis = filtrarRecintosMesmaEspecieVazio(recintosViaveis, animalHabilitado)
+    console.log(recintosViaveis) // Auxilio. Excluir
+
+    recintosViaveis = filtrarRecintosEspacoLivre(recintosViaveis, tamanhoTotalAnimalHabilitado)
     console.log(recintosViaveis) // Auxilio. Excluir
   } // Incluir Else / Herbívoro
 }
