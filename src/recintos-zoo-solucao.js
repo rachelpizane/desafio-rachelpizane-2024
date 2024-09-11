@@ -96,6 +96,10 @@ function filtrarRecintosSemCarnivorosVazio(recintosViaveis){
     return recinto.animais.length == 0 || recinto.animais.every(animalExistente => !animalExistente.ehCarnivoro)
   })
 }
+// A função retorna recintos que não estejam vazios
+function filtrarRecintosComAnimais(recintosViaveis){
+  return recintosViaveis.filter(recinto => recinto.animais.length != 0)
+}
 
 // A função formata uma lista de recintos viáveis.
 function formatarListaRecintosViaveis(recintosViaveis, tamanhoTotalAnimalHabilitado){
@@ -139,6 +143,11 @@ function analisaRecintosSolucao(animal, quantidade) {
 
     recintosViaveis = filtrarRecintosSemCarnivorosVazio(recintosViaveis)
     console.log(recintosViaveis) // Auxilio. Excluir
+
+    if(animalHabilitado.tipo == "macaco" && quantidade == 1){
+      recintosViaveis = filtrarRecintosComAnimais(recintosViaveis)
+      console.log(recintosViaveis) // Auxilio. Excluir
+    }
   }
 
   if(recintosViaveis.length == 0){
@@ -171,4 +180,4 @@ testarSolucoes("UNICORNIO", 1)
 testarSolucoes("MACACO", -5)
 testarSolucoes("MACACO", 4)
 testarSolucoes("CROCODILO", 1)
-testarSolucoes("LEAO", 4)
+testarSolucoes("MACACO", 1)
