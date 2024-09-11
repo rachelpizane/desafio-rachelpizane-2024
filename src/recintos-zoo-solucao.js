@@ -63,19 +63,26 @@ const recintos = [
   ])
 ]
 
-// Essa função valida se o novo animal consta na lista dos animais habilitados.
+// A função valida se o novo animal consta na lista dos animais habilitados.
 function validarAnimal(animal){
   return animais.some(animalHabilitado => animalHabilitado.tipo == animal)
 }
 
-// Essa função valida se a quantidade é maior que 0 e se é um número inteiro.
+// A função valida se a quantidade é maior que 0 e se é um número inteiro.
 function validarQuantidade(quantidade) {
   return Number.isInteger(quantidade) && quantidade > 0 
 }
 
-// Essa função retorna os recintos que possuem um bioma adequadro para o novo animal
-function filtrarRecintosBiomaAdequado(recintos, animalHabilitado){
+// A função retorna os recintos que possuem um bioma adequadro para o novo animal
+function filtrarRecintosBiomaAdequado(animalHabilitado){
   return recintos.filter(recinto => animalHabilitado.biomas.some(bioma => recinto.biomas.includes(bioma)))
+}
+
+// A função retorna os recintos que estão vazios ou que possuem animais da mesma espécie que o novo animal
+function filtrarRecintosMesmaEspecieVazio(recintosViaveis, animalHabilitado){
+  return recintosViaveis.filter(recinto => {
+    return recinto.animais.length == 0 || recinto.animais.some(animalExistente => animalExistente.tipo == animalHabilitado.tipo)
+  })
 }
 
 function analisaRecintosSolucao(animal, quantidade) {
@@ -97,9 +104,18 @@ function analisaRecintosSolucao(animal, quantidade) {
   console.log(animalHabilitado) // Auxilio. Excluir
   console.log(tamanhoTotalAnimalHabilitado) // Auxilio. Excluir
 
-  let recintosViaveis = filtrarRecintosBiomaAdequado(recintos, animalHabilitado)
+  let recintosViaveis = filtrarRecintosBiomaAdequado(animalHabilitado)
   console.log(recintosViaveis) // Auxilio. Excluir
+
+  if(animalHabilitado.ehCarnivoro){
+    console.log("É Carnívoro!") // Auxilio. Excluir
+
+    recintosViaveis = filtrarRecintosMesmaEspecieVazio(recintosViaveis, animalHabilitado)
+    console.log(recintosViaveis) // Auxilio. Excluir
+  } // Incluir Else / Herbívoro
 }
+
+
 
 export { analisaRecintosSolucao as analisaRecintosSolucao};
 
