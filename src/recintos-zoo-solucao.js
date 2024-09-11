@@ -73,6 +73,7 @@ function validarQuantidade(quantidade) {
   return Number.isInteger(quantidade) && quantidade > 0 
 }
 
+// A função verifica se o recinto possui umaa especie diferente e retorna o valor do espaço extra.
 function definirEspacoExtra(recinto, animalHabilitado) {
   let validaAnimalEspecieDiferente = recinto.animais.some(animalExistente => animalExistente.tipo != animalHabilitado.tipo);
   return validaAnimalEspecieDiferente ? 1 : 0;
@@ -94,7 +95,7 @@ function filtrarRecintosMesmaEspecieVazio(recintosViaveis, animalHabilitado){
 function filtrarRecintosEspacoLivre(recintosViaveis, animalHabilitado, tamanhoTotalAnimalHabilitado) {
   return recintosViaveis.filter(recinto => { 
     let espacoExtra = definirEspacoExtra(recinto, animalHabilitado)
-    console.log(espacoExtra)
+
     return recinto.espacoLivre() >= (tamanhoTotalAnimalHabilitado + espacoExtra)})
 }
 
@@ -144,41 +145,32 @@ function analisaRecintosSolucao(animal, quantidade) {
 
   let animalHabilitado = animais.find(animalHabilitado => animalHabilitado.tipo == animal)
   let tamanhoTotalAnimalHabilitado = quantidade * animalHabilitado.tamanho
-  console.log(animalHabilitado.tipo) // Auxilio. Excluir
-  console.log(tamanhoTotalAnimalHabilitado) // Auxilio. Excluir
 
   let recintosViaveis = filtrarRecintosBiomaAdequado(animalHabilitado)
-  console.log(recintosViaveis) // Auxilio. Excluir
 
   if(animalHabilitado.ehCarnivoro){
-    console.log("É Carnívoro!") // Auxilio. Excluir
-
     recintosViaveis = filtrarRecintosMesmaEspecieVazio(recintosViaveis, animalHabilitado)
-    console.log(recintosViaveis) // Auxilio. Excluir
 
     recintosViaveis = filtrarRecintosEspacoLivre(recintosViaveis, animalHabilitado, tamanhoTotalAnimalHabilitado)
-    console.log(recintosViaveis) // Auxilio. Excluir
-  } else {
-    console.log("É Herbívoro!") // Auxilio. Excluir
 
+  } else {
     recintosViaveis = filtrarRecintosSemCarnivorosVazio(recintosViaveis)
-    console.log(recintosViaveis) // Auxilio. Excluir
 
     if(animalHabilitado.tipo == "hipopotamo"){
       let recintosBiomaSavanaRio = filtrarRecintoBiomasSavanaRio(recintosViaveis, animalHabilitado)
-      console.log(recintosBiomaSavanaRio) // Auxilio. Excluir
+     
       recintosViaveis = filtrarRecintosMesmaEspecieVazio(recintosViaveis, animalHabilitado)
       recintosViaveis = recintosViaveis.concat(recintosBiomaSavanaRio)
-      console.log(recintosViaveis) // Auxilio. Excluir
+
     }
 
     if(animalHabilitado.tipo == "macaco" && quantidade == 1){
       recintosViaveis = filtrarRecintosComAnimais(recintosViaveis)
-      console.log(recintosViaveis) // Auxilio. Excluir
+
     }
 
     recintosViaveis = filtrarRecintosEspacoLivre(recintosViaveis, animalHabilitado, tamanhoTotalAnimalHabilitado)
-    console.log(recintosViaveis) // Auxilio. Excluir
+
   }
 
   if(recintosViaveis.length == 0){
@@ -186,31 +178,11 @@ function analisaRecintosSolucao(animal, quantidade) {
 
   } else {
     resultado.recintosViaveis = formatarListaRecintosViaveis(recintosViaveis, animalHabilitado, tamanhoTotalAnimalHabilitado)
-    resultado.recintosViaveis.forEach(recinto => {
-      console.log(recinto)
-    }) // Auxilio. Excluir
-    console.log("Comprimento: " + resultado.recintosViaveis.length) // Auxilio. Excluir
+
   }
 
   return resultado
 }
 
 
-
-export { analisaRecintosSolucao as analisaRecintosSolucao};
-
-function testarSolucoes(animal, quantidade){
-  let resultado = analisaRecintosSolucao(animal, quantidade)
-  if(resultado){
-    console.log(`Erro: ${resultado.erro} \nRecintos Viáveis: ${resultado.recintosViaveis}`)
-  }
-  console.log("Testando")
-}
-
-// testarSolucoes("UNICORNIO", 1)
-// testarSolucoes("MACACO", -5)
-testarSolucoes("MACACO", 2)
-// testarSolucoes("CROCODILO", 1)
-// testarSolucoes("MACACO", 1)
-// testarSolucoes("LEAO", 2)
-// testarSolucoes("hIPOPOTAMO", 1)
+export { analisaRecintosSolucao };
