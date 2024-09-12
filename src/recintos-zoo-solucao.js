@@ -73,13 +73,13 @@ function validarQuantidade(quantidade) {
   return Number.isInteger(quantidade) && quantidade > 0 
 }
 
-// A função verifica se o recinto possui umaa especie diferente e retorna o valor do espaço extra.
+// A função verifica se o recinto possui uma especie diferente e retorna o valor do espaço extra.
 function definirEspacoExtra(recinto, animalHabilitado) {
   let validaAnimalEspecieDiferente = recinto.animais.some(animalExistente => animalExistente.tipo != animalHabilitado.tipo);
   return validaAnimalEspecieDiferente ? 1 : 0;
 }
 
-// A função retorna os recintos que possuem um bioma adequadro para o novo animal
+// A função retorna os recintos que possuem um bioma adequado para o novo animal
 function filtrarRecintosBiomaAdequado(animalHabilitado){
   return recintos.filter(recinto => animalHabilitado.biomas.some(bioma => recinto.biomas.includes(bioma)))
 }
@@ -151,8 +151,6 @@ function analisaRecintosSolucao(animal, quantidade) {
   if(animalHabilitado.ehCarnivoro){
     recintosViaveis = filtrarRecintosMesmaEspecieVazio(recintosViaveis, animalHabilitado)
 
-    recintosViaveis = filtrarRecintosEspacoLivre(recintosViaveis, animalHabilitado, tamanhoTotalAnimalHabilitado)
-
   } else {
     recintosViaveis = filtrarRecintosSemCarnivorosVazio(recintosViaveis)
 
@@ -169,9 +167,9 @@ function analisaRecintosSolucao(animal, quantidade) {
 
     }
 
-    recintosViaveis = filtrarRecintosEspacoLivre(recintosViaveis, animalHabilitado, tamanhoTotalAnimalHabilitado)
-
   }
+
+  recintosViaveis = filtrarRecintosEspacoLivre(recintosViaveis, animalHabilitado, tamanhoTotalAnimalHabilitado)
 
   if(recintosViaveis.length == 0){
     resultado.erro = "Não há recinto viável"
